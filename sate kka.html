@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sate Sat Set - Premium POS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --gold:#D4AF37;
+    --dark:#121212;
+    --surface:#1e1e1e;
+    --text-main:#FFFFFF;
+    --text-dim:#A0A0A0;
+    --glass:rgba(255,255,255,0.05);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Plus Jakarta Sans',sans-serif;
+}
+
+body{
+    background:var(--dark);
+    color:var(--text-main);
+    overflow:hidden;
+}
+
+.app-container{
+    display:flex;
+    height:100vh;
+}
+
+/* MAIN */
+.main-content{
+    flex:2.5;
+    padding:40px;
+    overflow-y:auto;
+    background:radial-gradient(circle at top left,#2c2c2c,#121212);
+}
+
+.brand-section{
+    margin-bottom:40px;
+}
+
+.brand-section h1{
+    font-size:42px;
+    font-weight:800;
+    background:linear-gradient(to right,#fff,var(--gold));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.brand-section p{
+    color:var(--gold);
+    letter-spacing:2px;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.category-header{
+    font-size:18px;
+    margin:30px 0 20px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.category-header::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--glass);
+}
+
+.grid-menu{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:var(--surface);
+    border-radius:24px;
+    padding:15px;
+    border:1px solid var(--glass);
+    transition:.3s;
+    cursor:pointer;
+    position:relative;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+    border-color:var(--gold);
+}
+
+.card img{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    border-radius:18px;
+    margin-bottom:15px;
+}
+
+.card h4{
+    margin-bottom:5px;
+}
+
+.card p{
+    color:var(--gold);
+    font-weight:bold;
+}
+
+.special-badge{
+    position:absolute;
+    top:25px;
+    right:25px;
+    background:var(--gold);
+    color:black;
+    font-size:10px;
+    padding:4px 12px;
+    border-radius:20px;
+    font-weight:800;
+}
+
+/* SIDEBAR */
+.sidebar{
+    flex:1;
+    background:rgba(18,18,18,.85);
+    backdrop-filter:blur(20px);
+    border-left:1px solid var(--glass);
+    display:flex;
+    flex-direction:column;
+}
+
+.tab-nav{
+    display:flex;
+    gap:10px;
+    padding:20px;
+}
+
+.tab-btn{
+    flex:1;
+    padding:12px;
+    border-radius:12px;
+    background:var(--glass);
+    color:var(--text-dim);
+    text-align:center;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.tab-btn.active{
+    background:var(--gold);
+    color:black;
+}
+
+.order-container{
+    flex:1;
+    padding:0 25px;
+    overflow-y:auto;
+}
+
+.order-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 0;
+    border-bottom:1px solid var(--glass);
+}
+
+.checkout-box{
+    background:var(--surface);
+    padding:30px;
+    border-radius:30px 30px 0 0;
+}
+
+.total-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:24px;
+    font-weight:800;
+    margin-bottom:20px;
+}
+
+.btn-pay{
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:18px;
+    background:linear-gradient(45deg,var(--gold),#f3d060);
+    color:black;
+    font-weight:800;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn-pay:hover{
+    transform:scale(1.02);
+}
+
+select{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    margin-bottom:15px;
+    background:var(--glass);
+    color:white;
+}
+
+/* MODAL / RECEIPT */
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.9);
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.receipt-card{
+    background:white;
+    color:black;
+    width:350px;
+    padding:40px;
+    font-family:'Courier New',monospace;
+    border-radius:10px;
+}
+
+.history-card{
+    background:var(--glass);
+    padding:15px;
+    border-radius:15px;
+    margin-bottom:10px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.remove-btn{
+    background: #ff4d4d;
+    color:white;
+    border:none;
+    padding:5px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app-container">
+
+<main class="main-content">
+    <div class="brand-section">
+        <h1>SATE SAT SET</h1>
+        <p>Premium Skewers • Authentic Taste</p>
+    </div>
+
+    <div class="category-header">🍢 Signature Sate</div>
+    <div class="grid-menu">
+        <div class="card" onclick="addToCart('Sate Ayam Madura', 35000)">
+            <span class="special-badge">FAVORITE</span>
+            <img src="https://cdn.phototourl.com/free/2026-05-19-6e85a634-4eeb-4a26-9669-c37ce2cfa38b.jpg">
+            <h4>Sate Ayam Madura</h4>
+            <p>Rp 35.000</p>
+        </div>
+        <div class="card" onclick="addToCart('Sate Kambing Muda', 65000)">
+            <img src="https://cdn.phototourl.com/free/2026-05-19-4a14c5f9-42ad-4f37-9f3b-de913c14d2bc.jpg">
+            <h4>Sate Kambing Muda</h4>
+            <p>Rp 65.000</p>
+        </div>
+        <div class="card" onclick="addToCart('Sate Wagyu Sat Set', 125000)">
+            <span class="special-badge">PREMIUM</span>
+            <img src="https://cdn.phototourl.com/free/2026-05-19-7bd7c2e6-0a82-4a84-ade4-138938de98fa.jpg">
+            <h4>Sate Wagyu Sat Set</h4>
+            <p>Rp 125.000</p>
+        </div>
+    </div>
+
+    <div class="category-header">🍹 Refreshment</div>
+    <div class="grid-menu">
+        <div class="card" onclick="addToCart('Es Teh Lychee', 18000)">
+            <img src="https://cdn.phototourl.com/free/2026-05-19-e6ffada0-a30b-4796-92c4-f34e4f4c30eb.jpg">
+            <h4>Es Teh Lychee</h4>
+            <p>Rp 18.000</p>
+        </div>
+        <div class="card" onclick="addToCart('Juice Alpukat Mewah', 25000)">
+            <img src="https://cdn.phototourl.com/free/2026-05-19-0c60199c-9b4f-4d60-bfa9-13211cc53118.jpg">
+            <h4>Juice Alpukat Mewah</h4>
+            <p>Rp 25.000</p>
+        </div>
+    </div>
+</main>
+
+<aside class="sidebar">
+    <div class="tab-nav">
+        <div class="tab-btn active" id="tab-c" onclick="switchTab('cart')">Order</div>
+        <div class="tab-btn" id="tab-h" onclick="switchTab('history')">History</div>
+    </div>
+
+    <div class="order-container" id="content-cart">
+        <div id="cart-list">
+            <p style="text-align:center;color:gray;margin-top:100px;">Your cart is empty</p>
+        </div>
+    </div>
+
+    <div class="order-container" id="content-history" style="display:none;">
+        <div id="history-list"></div>
+    </div>
+
+    <div class="checkout-box" id="checkout-area">
+        <div class="total-row">
+            <span>Total</span>
+            <span id="total-val" style="color:var(--gold)">Rp 0</span>
+        </div>
+        <select id="pay-method">
+            <option value="QRIS">Digital Payment (QRIS)</option>
+            <option value="Tunai">Cash</option>
+            <option value="Credit Card">Credit Card</option>
+        </select>
+        <button class="btn-pay" onclick="processPayment()">CONFIRM PAYMENT</button>
+    </div>
+</aside>
+
+</div>
+
+<div class="modal" id="modal">
+    <div id="modal-body"></div>
+</div>
+
+<script>
+// Load data dari LocalStorage saat pertama kali buka
+let cart = [];
+let historyData = JSON.parse(localStorage.getItem('sate_history')) || [];
+let total = 0;
+
+// Render history awal jika ada data tersimpan
+renderHistory();
+
+function addToCart(name, price) {
+    cart.push({ name, price });
+    renderCart();
+}
+
+function renderCart() {
+    const list = document.getElementById('cart-list');
+    if (cart.length === 0) {
+        list.innerHTML = `<p style="text-align:center;color:gray;margin-top:100px;">Your cart is empty</p>`;
+        total = 0;
+        document.getElementById('total-val').innerText = 'Rp 0';
+        return;
+    }
+
+    list.innerHTML = cart.map((item, index) => `
+        <div class="order-item">
+            <div>
+                <div style="font-weight:600">${item.name}</div>
+                <div style="font-size:12px;color:var(--gold)">Premium Menu</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <b>Rp ${item.price.toLocaleString()}</b>
+                <button class="remove-btn" onclick="removeItem(${index})">X</button>
+            </div>
+        </div>
+    `).join('');
+
+    total = cart.reduce((sum, item) => sum + item.price, 0);
+    document.getElementById('total-val').innerText = `Rp ${total.toLocaleString()}`;
+}
+
+function removeItem(index) {
+    cart.splice(index, 1);
+    renderCart();
+}
+
+function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    
+    if (tab === 'cart') {
+        document.getElementById('tab-c').classList.add('active');
+        document.getElementById('content-cart').style.display = 'block';
+        document.getElementById('content-history').style.display = 'none';
+        document.getElementById('checkout-area').style.display = 'block';
+    } else {
+        document.getElementById('tab-h').classList.add('active');
+        document.getElementById('content-cart').style.display = 'none';
+        document.getElementById('content-history').style.display = 'block';
+        document.getElementById('checkout-area').style.display = 'none';
+        renderHistory();
+    }
+}
+
+function processPayment() {
+    if (cart.length === 0) {
+        alert('Cart masih kosong!');
+        return;
+    }
+
+    const method = document.getElementById('pay-method').value;
+    const invoice = 'INV-' + Date.now();
+    const date = new Date().toLocaleString('id-ID');
+
+    // 1. Simpan Data ke Riwayat (Variabel)
+    historyData.unshift({
+        invoice,
+        total,
+        method,
+        date
+    });
+
+    // 2. Simpan Permanen ke LocalStorage
+    localStorage.setItem('sate_history', JSON.stringify(historyData));
+
+    // 3. Buat Tampilan Struk
+    let qrisSection = '';
+    if (method === 'QRIS') {
+        qrisSection = `
+            <div style="text-align:center;margin-top:20px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/QRIS_logo.svg/512px-QRIS_logo.svg.png" style="width:80px;margin-bottom:10px;">
+                <br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=SATE-SAT-SET-${invoice}" style="width:200px;border-radius:12px;border:1px solid #ddd;padding:10px;">
+                <p style="font-size:11px;margin-top:10px;color:#444;">Scan untuk bayar</p>
+            </div>`;
+    }
+
+    const receipt = `
+        <div class="receipt-card">
+            <h2 style="text-align:center;margin-top:0;">SATE SAT SET</h2>
+            <p style="text-align:center;font-size:12px;">Premium POS Receipt</p>
+            <hr>
+            ${cart.map(item => `
+                <div style="display:flex;justify-content:space-between;margin:8px 0;font-size:14px;">
+                    <span>${item.name}</span>
+                    <span>Rp ${item.price.toLocaleString()}</span>
+                </div>
+            `).join('')}
+            <hr>
+            <div style="display:flex;justify-content:space-between;font-weight:bold;font-size:16px;">
+                <span>Total</span>
+                <span>Rp ${total.toLocaleString()}</span>
+            </div>
+            <div style="font-size:11px;margin-top:20px;">
+                <p>Invoice : ${invoice}</p>
+                <p>Payment : ${method}</p>
+                <p>Date : ${date}</p>
+            </div>
+            ${qrisSection}
+            <br>
+            <button onclick="closeModal()" style="width:100%;padding:12px;border:none;background:black;color:white;border-radius:10px;cursor:pointer;font-weight:bold;">TUTUP</button>
+        </div>`;
+
+    document.getElementById('modal-body').innerHTML = receipt;
+    document.getElementById('modal').style.display = 'flex';
+
+    // 4. Reset Cart & Update Tampilan History
+    cart = [];
+    renderCart();
+    renderHistory();
+}
+
+function renderHistory() {
+    const historyList = document.getElementById('history-list');
+    if (historyData.length === 0) {
+        historyList.innerHTML = `<p style="text-align:center;color:gray;margin-top:100px;">No transaction history</p>`;
+        return;
+    }
+
+    historyList.innerHTML = historyData.map(h => `
+        <div class="history-card">
+            <div style="font-weight:bold;">${h.invoice}</div>
+            <div style="font-size:11px;color:gray;">${h.date}</div>
+            <div style="margin-top:8px;color:var(--gold);font-weight:bold;font-size:16px;">Rp ${h.total.toLocaleString()}</div>
+            <div style="font-size:11px;background:rgba(255,255,255,0.1);display:inline-block;padding:2px 8px;border-radius:5px;margin-top:5px;">${h.method}</div>
+        </div>
+    `).join('');
+}
+
+function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+}
+
+window.onclick = function(e) {
+    const modal = document.getElementById('modal');
+    if (e.target === modal) { closeModal(); }
+}
+</script>
+
+</body>
+</html>
